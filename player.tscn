@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://drhra8ew6x6lc"]
+[gd_scene load_steps=32 format=3 uid="uid://drhra8ew6x6lc"]
 
 [ext_resource type="Texture2D" uid="uid://5taauo7fujid" path="res://bogan_sprites.png" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://ddjfg3fymyft4" path="res://player.gd" id="1_onrkg"]
@@ -225,10 +225,17 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_onrkg"]
+radius = 4.0
+height = 10.0
+
 [node name="player" type="CharacterBody2D"]
 script = ExtResource("1_onrkg")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_1jxqw")
-animation = &"idle_right"
-frame_progress = 0.112487
+animation = &"idle_down"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 5)
+shape = SubResource("CapsuleShape2D_onrkg")
