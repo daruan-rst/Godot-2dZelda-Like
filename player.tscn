@@ -230,6 +230,8 @@ radius = 4.0
 height = 10.0
 
 [node name="player" type="CharacterBody2D"]
+z_index = 1
+y_sort_enabled = true
 script = ExtResource("1_onrkg")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
