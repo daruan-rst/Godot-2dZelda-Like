@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://drhra8ew6x6lc"]
+[gd_scene load_steps=33 format=3 uid="uid://drhra8ew6x6lc"]
 
 [ext_resource type="Texture2D" uid="uid://5taauo7fujid" path="res://bogan_sprites.png" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://ddjfg3fymyft4" path="res://player.gd" id="1_onrkg"]
@@ -229,9 +229,13 @@ animations = [{
 radius = 4.0
 height = 10.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_onrkg"]
+radius = 7.0
+
 [node name="player" type="CharacterBody2D"]
 z_index = 1
 y_sort_enabled = true
+collision_mask = 3
 script = ExtResource("1_onrkg")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -241,3 +245,13 @@ animation = &"idle_down"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 5)
 shape = SubResource("CapsuleShape2D_onrkg")
+
+[node name="hitbox" type="Area2D" parent="."]
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(0, 1)
+shape = SubResource("CircleShape2D_onrkg")
+
+[connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_exited" from="hitbox" to="." method="_on_hitbox_body_exited"]

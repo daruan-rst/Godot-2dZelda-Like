@@ -5,6 +5,10 @@ var last_direction = Vector2.ZERO
 var animated_sprite
 var direction_change_timer = 0
 var direction_change_interval = 5 # seconds
+var swoop = false
+var swoop_speed = 75
+var player = null
+var player_in_range = false
 
 var min_position = Vector2(0,0)
 var max_position = Vector2(800,430)
@@ -12,9 +16,18 @@ var max_position = Vector2(800,430)
 func _ready():
 	animated_sprite = $AnimatedSprite2D
 	pick_random_direction()
+	add_to_group("Enemy")
 	
 func _physics_process(delta: float) -> void:
-	direction_change_timer += delta
+	if swoop:
+		
+		var direction_to_player = (player.position - position).normalized()
+		
+		position += direction_to_player * swoop_speed * delta
+		
+	else:
+		direction_change_timer += delta
+	
 	if direction_change_timer >= direction_change_interval:
 		pick_random_direction()
 		direction_change_timer = 0
@@ -50,4 +63,17 @@ func pick_random_direction():
 		last_direction = new_direction
 		
 
+func _on_magpie_hitbox_body_entered(body: Node2D) -> void:
+	pass # Replace with function body.
 	
+func _on_magpie_hitbox_body_exited(body: Node2D) -> void:
+	pass # Replace with function body.
+
+
+func _on_territory_body_entered(body: Node2D) -> void:
+	player = body
+	swoop = true
+
+func _on_territory_body_exited(body: Node2D) -> void:
+	player = null
+	swoop = false

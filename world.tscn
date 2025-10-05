@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://bkdecdwb67m4k"]
+[gd_scene load_steps=8 format=3 uid="uid://bkdecdwb67m4k"]
 
 [ext_resource type="Texture2D" uid="uid://dp0vfbak1khl4" path="res://forest_.png" id="1_wtcfe"]
 [ext_resource type="PackedScene" uid="uid://drhra8ew6x6lc" path="res://player.tscn" id="2_fj7yv"]
 [ext_resource type="Texture2D" uid="uid://c8nytdvbiks6s" path="res://forest_ [resources].png" id="2_tlwt5"]
+[ext_resource type="PackedScene" uid="uid://c3poepo8k1863" path="res://magpie.tscn" id="4_aqk2v"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0e48y"]
 texture = ExtResource("1_wtcfe")
@@ -232,3 +233,18 @@ limit_left = 0
 limit_top = 0
 limit_right = 815
 limit_bottom = 350
+
+[node name="magpie" parent="." instance=ExtResource("4_aqk2v")]
+position = Vector2(38, 42)
+
+[node name="magpie2" parent="." instance=ExtResource("4_aqk2v")]
+position = Vector2(731, 296)
+
+[node name="magpie3" parent="." instance=ExtResource("4_aqk2v")]
+position = Vector2(718, 60)
+
+[node name="magpie4" parent="." instance=ExtResource("4_aqk2v")]
+position = Vector2(408, 313)
+
+[node name="magpie5" parent="." instance=ExtResource("4_aqk2v")]
+position = Vector2(24, 310)

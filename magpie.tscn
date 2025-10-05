@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://c3poepo8k1863"]
+[gd_scene load_steps=19 format=3 uid="uid://c3poepo8k1863"]
 
 [ext_resource type="Texture2D" uid="uid://b70lkgg5khnwh" path="res://magpie.png" id="1_iv5hu"]
 [ext_resource type="Script" uid="uid://c0fgtloutbomy" path="res://magpie.gd" id="1_ix2ln"]
@@ -101,8 +101,14 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5imix"]
-radius = 5.0
-height = 24.0
+radius = 3.0
+height = 12.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ix2ln"]
+radius = 7.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7qk8d"]
+radius = 55.0091
 
 [node name="magpie" type="CharacterBody2D"]
 z_index = 1
@@ -112,8 +118,27 @@ collision_mask = 2
 script = ExtResource("1_ix2ln")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, 2.38419e-07)
+scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_t4u5u")
 animation = &"fly_up"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_5imix")
+
+[node name="magpie_hitbox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="magpie_hitbox"]
+shape = SubResource("CircleShape2D_ix2ln")
+
+[node name="territory" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="territory"]
+shape = SubResource("CircleShape2D_7qk8d")
+
+[connection signal="body_entered" from="magpie_hitbox" to="." method="_on_magpie_hitbox_body_entered"]
+[connection signal="body_exited" from="magpie_hitbox" to="." method="_on_magpie_hitbox_body_exited"]
+[connection signal="body_entered" from="territory" to="." method="_on_territory_body_entered"]
+[connection signal="body_exited" from="territory" to="." method="_on_territory_body_exited"]
