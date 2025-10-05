@@ -5,14 +5,13 @@ var speed = 100
 var last_direction = Vector2.ZERO
 	
 var animated_sprite
+var enemy_in_range = false
 
 func _ready():
 	animated_sprite = $AnimatedSprite2D
 	add_to_group("Player")
 
 func _physics_process(delta):
-	
-
 	
 	var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	
@@ -44,11 +43,13 @@ func _physics_process(delta):
 	
 	
 	
-
-
 func _on_hitbox_body_entered(body: Node2D) -> void:
-	pass # Replace with function body.
+	if body.is_in_group("Enemy"):
+		enemy_in_range = true
+		print("Getting swooped")
 
 
 func _on_hitbox_body_exited(body: Node2D) -> void:
-	pass # Replace with function body.
+		if body.is_in_group("Enemy"):
+			enemy_in_range = false
+			print("Enemy exited the hitbox")
