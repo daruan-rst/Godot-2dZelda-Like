@@ -9,6 +9,9 @@ var swoop = false
 var swoop_speed = 75
 var player = null
 var player_in_range = false
+var health = 50
+var is_dead = false
+
 
 var min_position = Vector2(0,0)
 var max_position = Vector2(800,430)
@@ -19,6 +22,8 @@ func _ready():
 	add_to_group("Enemy")
 	
 func _physics_process(delta: float) -> void:
+	update_health()
+	die()
 	if swoop:
 		var direction_to_player = (player.position - position).normalized()
 		velocity = direction_to_player * swoop_speed
@@ -74,15 +79,29 @@ func pick_random_direction():
 		new_direction = Vector2(randi() % 3 -1, randi() % 3 - 1)
 	new_direction = new_direction.normalized()
 	last_direction = new_direction
+	
+func update_health():
+	var healthbar = $healthbar
+	healthbar.value = health
+	if health >= 50:
+		healthbar.visible = false
+	else:
+		healthbar.visible = true
+
+func die():
+	if health <= 0 and not is_dead:
+		is_dead = true
+		queue_free()
 		
 
 func _on_magpie_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		player_in_range = true
-		print("Swooping")
+		print("Swooping - magpie")
 		animated_sprite.flip_v = position.y > body.position.y
 		animated_sprite.flip_h = position.x > body.position.x
-		#update_animation(last_direction, true)
+		swoop_speed = 0
+		health = health - 20
 	
 func _on_magpie_hitbox_body_exited(body: Node2D) -> void:
 	if body.is_in_group("Player"):
@@ -90,6 +109,7 @@ func _on_magpie_hitbox_body_exited(body: Node2D) -> void:
 		print("Player exited the hitbox")
 		animated_sprite.flip_v = false
 		animated_sprite.flip_h = false
+		swoop_speed = 75
 
 
 func _on_territory_body_entered(body: Node2D) -> void:
