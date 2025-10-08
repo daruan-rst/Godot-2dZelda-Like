@@ -6,6 +6,9 @@ var animated_sprite
 var enemy_in_range = false
 var health = 100
 var is_dead = false
+var is_attacking = false
+var attack_timer = 0.0
+var attack_duration = 0.5 #Time in seconds
 
 func _ready():
 	animated_sprite = $AnimatedSprite2D
@@ -17,17 +20,31 @@ func _physics_process(delta):
 	update_animation()
 	move_and_slide()
 	
+	if is_attacking:
+		attack_timer += delta
+	if attack_timer >= attack_duration:
+		is_attacking = false
+		attack_timer = 0.0
+	
 func update_animation():
 	if is_dead:
 		return
-
+		
+	if is_attacking:
+		if last_direction.y < 0:
+			animated_sprite.play("attack_up")
+		elif last_direction.y > 0:
+			animated_sprite.play("attack_down")
+		elif last_direction.x != 0:
+			animated_sprite.play("attack_right")
+		return
 	
 	var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	
 	velocity = direction * speed
 	
 	if direction != Vector2.ZERO:
-		last_direction = direction
+		last_direction = direction.normalized()
 		
 	if direction.x != 0:
 		animated_sprite.play("walk_right")
@@ -47,7 +64,10 @@ func update_animation():
 
 	animated_sprite.flip_h = last_direction.x < 0
 	
-	
+func _input(event):
+	if event.is_action_pressed("ui_select"):
+		is_attacking = true
+		attack_timer = 0.0	
 
 
 func update_health():
